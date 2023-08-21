@@ -28,10 +28,12 @@ public class HotelController {
         return ResponseEntity.status(HttpStatus.CREATED).body(hotelService.get(hotelId));
     }
 
+
     @GetMapping()
     public ResponseEntity<List<Hotel>> getAllHotel(){
         return ResponseEntity.status(HttpStatus.CREATED).body(hotelService.getAllHotel());
     }
+
 
 
 
