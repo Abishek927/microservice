@@ -11,11 +11,15 @@
         <module name="HotelService" />
         <module name="UserService" />
         <module name="RatingService" />
+        <module name="Api-Gateway" />
+        <module name="Config-Server" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Api-Gateway" options="-parameters" />
+      <module name="Config-Server" options="-parameters" />
       <module name="Eureka-Server" options="-parameters" />
       <module name="HotelService" options="-parameters" />
       <module name="RatingService" options="-parameters" />

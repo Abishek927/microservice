@@ -8,6 +8,8 @@
         <option value="$PROJECT_DIR$/HotelService/HotelService/pom.xml" />
         <option value="$PROJECT_DIR$/RatingService/RatingService/pom.xml" />
         <option value="$PROJECT_DIR$/Eureka-Server/Eureka-Server/pom.xml" />
+        <option value="$PROJECT_DIR$/Api-Gateway/Api-Gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/Config-Server/Config-Server/pom.xml" />
       </list>
     </option>
   </component>
