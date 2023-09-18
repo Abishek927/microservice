@@ -5,6 +5,7 @@ import com.abi.user.service.entities.Ratings;
 import com.abi.user.service.entities.User;
 import com.abi.user.service.proxy.HotelService;
 import com.abi.user.service.services.UserService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user1);
     }
     @GetMapping("/{userId}")
+    @CircuitBreaker(name="ratingHotelBreaker",fallbackMethod = "ratingHotelFallBack")
     public ResponseEntity<User> getSingleUser(@PathVariable String userId){
 
         User user=userService.getUser(userId);
@@ -56,6 +58,14 @@ public class UserController {
         user.setRatings(userRatings);
 
         return ResponseEntity.ok(user);
+    }
+
+    //creating fall back method for circuitbreaker
+    public ResponseEntity<User> ratingHotelFallBack(String userId,Exception ex){
+        logger.info("Fallback is executed because service is down: ",ex.getMessage());
+        User user=User.builder().email("dummy@gmail.com").name("Dummy").about("This is dummy user for some services down").build();
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+
     }
     @GetMapping
     public ResponseEntity<List<User>> getAllUser(){

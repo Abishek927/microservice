@@ -1,7 +1,11 @@
 server:
   port:8081
-
+#configuring config-server for common configuration in all the microservice like registration of eureka service in eureka server
 spring:
+  config:
+    import: configserver:http://localhost:8085
+  profile:
+    active: prod
   datasource:
     url: jdbc:mysql://localhost:3306/microservices
     username: root
@@ -16,13 +20,46 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MYSQL8Dialect
 
-eureka:
-  instance:
-    prefer-ip-address: true
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#
+#  client:
+#    fetch-registry: true
+#    registry-with-eureka: true
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
 
-  client:
-    fetch-registry: true
-    registry-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+#configuration for resilience_4j for circuit breaking
+
+#enabling the circuit_breaker in the health
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health #expose the health of user service using actuator
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      ratingHotelBreak: #configuring the name of the circuit_breaker used in user_controller getSingleUser endpoint
+        registerHealthIndicator: true #registering health indicator for circuit_breaker
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50 #if failure rate is greater than 50% then automatically circuit_breaker will open
+        minimumNumberOfCalls: 5 #minimum number of calls which are required before the circuit_breaker can calculate the error rate or slow call rate
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 6s #6 second waiting interval time for transitioning to half open state
+        permittedNumberOfCallsInHalfOpenState: 3 #3 number of permitted call for transition to open state or closed state according to failure/success rate
+        slidingWindowSize: 10 #Configures the size of the sliding window which is used to record the outcome of calls when the circuit_breaker is closed
+        slidingWindowType: COUNT_BASED
+
+
+
+
 
