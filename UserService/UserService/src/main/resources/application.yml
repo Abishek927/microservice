@@ -60,6 +60,19 @@ resilience4j:
         slidingWindowType: COUNT_BASED
 
 
+retry:
+  instances:
+    ratingHotelService:
+      max-attempt: 3
+      wait-duration: 5s #time duration between first and second retry of the request if the result is not  provided in first try
 
+
+
+  rateLimiter:
+    instances:
+      userRateLimiter:
+        limit-refresh-period: 4s
+        limit-for-period: 2
+        timeout-duration: 0s
 
 
