@@ -12,6 +12,24 @@ spring:
     password: '@bishek1022@*'
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-97715941.okta.com/oauth2/default
+      client:
+        registration:
+          my-internal-client:
+            provider: okta
+            authorization-grant-type: client_credentials
+            scope: internal
+            client-id: 0oabf5fqd8EJnLram5d7
+            client-secret: leUpZN8ySS88nSnjTQBstdHuyCBgDKqeMk-wiwcTHwOxmQ-Vhg7dr8wos6haQqUy
+        provider:
+          okta:
+            issue-uri: https://dev-97715941.okta.com/oauth2/default
+
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -74,5 +92,10 @@ retry:
         limit-refresh-period: 4s
         limit-for-period: 2
         timeout-duration: 0s
+
+okta:
+  oauth2:
+    issuer: https://dev-97715941.okta.com/oauth2/default
+      audience: api//default
 
 
